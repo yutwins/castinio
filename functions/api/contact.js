@@ -49,7 +49,7 @@ export async function onRequestPost({ request, env }) {
   });
   const verifyResult = await verifyResponse.json();
   if (!verifyResult.success) {
-    return jsonResponse({ ok: false, error: 'turnstile_failed' }, 400);
+    return jsonResponse({ ok: false, error: 'turnstile_failed', debug: verifyResult['error-codes'], hasSecret: Boolean(env.TURNSTILE_SECRET_KEY) }, 400);
   }
 
   const id = `${Date.now()}-${crypto.randomUUID()}`;
