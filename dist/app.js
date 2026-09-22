@@ -9,11 +9,41 @@ const contactForm = document.querySelector('#contact-form');
 if (contactForm) {
   const type = new URLSearchParams(location.search).get('type');
   if (['join','match','other'].includes(type)) contactForm.elements.type.value = type;
-  contactForm.addEventListener('submit', event => {
+  contactForm.addEventListener('submit', async event => {
     event.preventDefault();
     const result = document.querySelector('#form-result');
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    const turnstileToken = contactForm.elements['cf-turnstile-response']?.value || '';
+
     result.hidden = false;
-    result.textContent = '入力内容を確認しました。このフォームは画面確認用です。メッセージは送信・保存されていません。実際のご連絡はInstagramのDMをご利用ください。';
-    result.focus();
+    result.textContent = '送信中…';
+    submitButton.disabled = true;
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: contactForm.elements.type.value,
+          name: contactForm.elements.name.value,
+          email: contactForm.elements.email.value,
+          message: contactForm.elements.message.value,
+          turnstileToken,
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.ok && data.ok) {
+        result.textContent = 'お問い合わせを受け付けました。ありがとうございます。';
+        contactForm.reset();
+        window.turnstile?.reset();
+      } else {
+        result.textContent = '送信に失敗しました。お手数ですがInstagramのDMからご連絡ください。';
+      }
+    } catch (error) {
+      result.textContent = '通信エラーが発生しました。お手数ですがInstagramのDMからご連絡ください。';
+    } finally {
+      submitButton.disabled = false;
+      result.focus();
+    }
   });
 }
