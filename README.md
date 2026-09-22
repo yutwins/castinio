@@ -51,7 +51,7 @@ python3 -m http.server 8765 --bind 127.0.0.1 --directory site/dist
 `functions/api/contact.js` はTurnstileでの検証とKVへの保存を行う。以下をCloudflareダッシュボードで設定する。
 
 1. **KV namespace**: Workers & Pages → KV でnamespaceを作成し、Pagesプロジェクトの設定（Settings → Functions → KV namespace bindings）で変数名 `CONTACT_SUBMISSIONS` として紐付ける。
-2. **Turnstile**: Turnstileで新しいウィジェットを作成し、Site keyを `pages/contact.html` の `data-sitekey="REPLACE_WITH_TURNSTILE_SITE_KEY"` に反映してビルドし直す。Secret keyはPagesプロジェクトの環境変数（Settings → Environment variables）に `TURNSTILE_SECRET_KEY` として登録する（Secret扱い）。
+2. **Turnstile**: Site keyは設定済み（`pages/contact.html` の `data-sitekey`）。Secret keyはPagesプロジェクトの環境変数（Settings → Environment variables）に `TURNSTILE_SECRET_KEY` として登録する（Secret扱い）。
 3. 保存された問い合わせ内容はCloudflareダッシュボードのKV namespaceから確認する。通知メールは送られないため、定期的に確認する運用が必要。
 
 ## 確認済み
