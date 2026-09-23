@@ -37,8 +37,6 @@ def make_member_pages():
     <div class="wrap"><p class="roster-notice">{notice}</p></div>
     <section class="section roster-section" id="players"><div class="wrap"><div class="roster-section-title"><div><div class="eyebrow">PLAYERS</div><h2>選手</h2></div><p>背番号順 <span>／ {len(players)} PLAYERS</span></p></div><div class="member-grid">{''.join(card(r) for r in players)}</div></div></section>
     <section class="section pale" id="staff"><div class="wrap"><div class="roster-section-title"><div><div class="eyebrow">COACHING STAFF</div><h2>監督・コーチ</h2></div></div><div class="member-grid">{''.join(card(r) for r in staff)}</div></div></section>'''
-    comparison = '''<aside class="motion-comparison" aria-label="動きの比較"><div class="wrap motion-controls"><span>動きの比較</span><div role="group" aria-label="アニメーションの種類"><button type="button" data-motion="adopted" aria-pressed="true">採用版：元の動き＋光</button><button type="button" data-motion="original" aria-pressed="false">A：今の動き</button><button type="button" data-motion="bold" aria-pressed="false">B：大胆な動き</button></div><button type="button" id="motion-play">動きを再生</button><span id="motion-status" role="status">A：今の動き</span></div></aside>'''
-    listing = comparison + listing + '<script src="members-motion.js" defer></script>'
     pages = {'members': ('メンバー紹介｜FCカスティーニオ', listing)}
     for i, r in enumerate(ordered):
         fields = [('氏名', r['name']), ('英語表記', r['english_name'] or '準備中')]
