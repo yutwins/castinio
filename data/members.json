@@ -338,8 +338,9 @@
     "position": "",
     "history": "",
     "message": "",
-    "image": "assets/emblem-instagram.jpg",
-    "placeholder": true
+    "image": "assets/yuki-yamashita-transparent.png",
+    "placeholder": false,
+    "image_layout": "portrait"
   },
   {
     "id": "staff-02",
