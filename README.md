@@ -36,6 +36,27 @@ python3 -m http.server 8765 --bind 127.0.0.1 --directory site/dist
 
 ブラウザで http://127.0.0.1:8765/ を開く。ローカルサーバー停止後は再起動するか、dist/index.htmlを直接開く。外部公開用サーバーとしては使用しない。
 
+## 公開フロー（プレビュー → 本番）
+
+`main` ブランチへのpushがそのまま本番 (`https://castinio.pages.dev`) に反映されるため、改修時は一度 `preview` ブランチで確認してから `main` に反映する。
+
+```sh
+git checkout preview          # 初回は git checkout -b preview
+# ここでファイルを編集し、python3 site/build_preview.py で再生成
+git add -A && git commit -m "変更内容"
+git push origin preview
+```
+
+`preview` ブランチをpushすると、Cloudflareが自動的に本番とは別のプレビュー環境（`https://preview.castinio.pages.dev`、またはコミットごとのハッシュ付きURL）を作成する。Cloudflareダッシュボード → castinioプロジェクト → **Deployments** からもURLを確認できる。プレビューで問題なければ、以下でmainに取り込んで本番反映する。
+
+```sh
+git checkout main
+git merge preview
+git push origin main          # ここで本番 (castinio.pages.dev) に反映される
+```
+
+**注意:** お問い合わせフォームを含むページをプレビューで確認する場合、Cloudflareダッシュボードの環境変数・KVバインディングを **Production** だけでなく **Preview** 環境にも設定する必要がある（下記「お問い合わせフォームの設定」参照）。また、Turnstileウィジェットの許可ドメインにプレビュー用ドメイン（`*.pages.dev` など）を追加しないと、プレビュー環境ではフォーム送信が失敗する。
+
 ## 試作の範囲と制約
 
 - 青を基調、赤をアクセントとし、提供写真5枚と公式Instagramのエンブレムを使用。
@@ -48,10 +69,10 @@ python3 -m http.server 8765 --bind 127.0.0.1 --directory site/dist
 
 ## お問い合わせフォームの設定（Cloudflare側で1回だけ必要）
 
-`functions/api/contact.js` はTurnstileでの検証とKVへの保存を行う。以下をCloudflareダッシュボードで設定する。
+`functions/api/contact.js` はTurnstileでの検証とKVへの保存を行う。以下をCloudflareダッシュボードで設定する。**Production・Preview の両方の環境**に設定しないと、`preview` ブランチでのプレビュー時にフォームが動作しない。
 
-1. **KV namespace**: Workers & Pages → KV でnamespaceを作成し、Pagesプロジェクトの設定（Settings → Functions → KV namespace bindings）で変数名 `CONTACT_SUBMISSIONS` として紐付ける。
-2. **Turnstile**: Site keyは設定済み（`pages/contact.html` の `data-sitekey`）。Secret keyはPagesプロジェクトの環境変数（Settings → Environment variables）に `TURNSTILE_SECRET_KEY` として登録する（Secret扱い）。
+1. **KV namespace**: Workers & Pages → KV でnamespaceを作成し、Pagesプロジェクトの設定（Settings → Functions → KV namespace bindings）で変数名 `CONTACT_SUBMISSIONS` として、Production・Previewの両方に紐付ける。
+2. **Turnstile**: Site keyは設定済み（`pages/contact.html` の `data-sitekey`）。Secret keyはPagesプロジェクトの環境変数（Settings → Environment variables）に `TURNSTILE_SECRET_KEY` として、Production・Preview両方にSecretとして登録する。Turnstile側の許可ドメイン設定にもプレビュー用ドメインを追加する。
 3. 保存された問い合わせ内容はCloudflareダッシュボードのKV namespaceから確認する。通知メールは送られないため、定期的に確認する運用が必要。
 
 ## 確認済み
