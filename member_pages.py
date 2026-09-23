@@ -22,7 +22,7 @@ def make_member_pages():
         return str(r['number']) if r['number'] is not None else f"{r['preview_number']:02}"
 
     def photo(r):
-        return f'''<div class="member-visual {'is-placeholder' if r['placeholder'] else ''}">
+        return f'''<div class="member-visual {'is-placeholder' if r['placeholder'] else ''} {'is-portrait' if r.get('image_layout') == 'portrait' else ''}">
           <span class="member-watermark" aria-hidden="true">{e(label(r))}</span>
           <img class="member-image" src="{e(r['image'])}" alt="{'個人写真準備中の仮アバター' if r['placeholder'] else e(r['name'])}" width="150" height="150" loading="lazy">
           {'<span class="photo-pending">PHOTO COMING SOON</span>' if r['placeholder'] else ''}</div>'''
@@ -32,7 +32,7 @@ def make_member_pages():
           {photo(r)}<div class="member-card-info"><span class="member-number">{e(label(r))}<small>{'仮番号' if r['kind']=='player' and r['number'] is None else ''}</small></span>
           <div><span class="member-role">{e(r['position'] or ('POSITION —' if r['kind']=='player' else 'COACHING STAFF'))}</span><h3>{e(r['name'])}</h3><span class="member-english">{e(r['english_name'] or 'NAME TO BE ANNOUNCED')}</span></div><span class="member-arrow" aria-hidden="true">↗</span></div></a>'''
 
-    notice = 'レイアウト確認用：氏名・背番号・プロフィールは仮表示です。写真はチームエンブレムを使用しています。'
+    notice = 'レイアウト確認用：氏名・背番号・プロフィールは仮表示です。個人写真が未準備の枠には仮アバター・エンブレムを使用しています。'
     listing = f'''<section class="roster-heading"><div class="wrap"><div class="breadcrumb"><a href="index.html">ホーム</a> / メンバー紹介</div><div class="eyebrow">THE PEOPLE OF CASTINIO</div><h1>MEMBERS<span>メンバー紹介</span></h1><p>この仲間と、楽しく、真剣に。</p><nav class="roster-jumps" aria-label="メンバー区分"><a href="#players">選手 <b>{len(players):02}</b></a><a href="#staff">監督・コーチ <b>{len(staff):02}</b></a></nav></div></section>
     <div class="wrap"><p class="roster-notice">{notice}</p></div>
     <section class="section roster-section" id="players"><div class="wrap"><div class="roster-section-title"><div><div class="eyebrow">PLAYERS</div><h2>選手</h2></div><p>背番号順 <span>／ {len(players)} PLAYERS</span></p></div><div class="member-grid">{''.join(card(r) for r in players)}</div></div></section>

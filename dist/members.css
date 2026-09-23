@@ -63,3 +63,11 @@
 [data-member-motion=adopted] .member-card:hover .member-watermark{color:#819ed4}
 [data-member-motion=adopted] .member-card:hover .member-visual:after{transform:translateX(100%)}
 }
+
+/* Portrait assets occupy the full frame; emblem placeholders retain their compact size. */
+.member-visual.is-portrait{aspect-ratio:3/4}
+.member-visual.is-portrait .member-image,
+.profile-image .member-visual.is-portrait .member-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;box-shadow:none;transform-origin:center center;padding-top:24px;box-sizing:border-box}
+.member-visual.is-portrait .photo-pending{bottom:12px;background:#f2f5f9e6;padding:4px 6px;left:12px;right:12px}
+.member-visual{aspect-ratio:3/4}
+.member-visual.is-portrait.is-placeholder .member-image{object-fit:cover;object-position:center;padding-top:0}

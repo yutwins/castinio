@@ -9,8 +9,9 @@
     "position": "",
     "history": "",
     "message": "",
-    "image": "assets/player-avatar-01.svg",
-    "placeholder": true
+    "image": "assets/yuto-nakamura-01.png",
+    "placeholder": false,
+    "image_layout": "portrait"
   },
   {
     "id": "player-02",
@@ -23,7 +24,8 @@
     "history": "",
     "message": "",
     "image": "assets/player-avatar-02.svg",
-    "placeholder": true
+    "placeholder": true,
+    "image_layout": "portrait"
   },
   {
     "id": "player-03",
@@ -36,7 +38,8 @@
     "history": "",
     "message": "",
     "image": "assets/player-avatar-03.svg",
-    "placeholder": true
+    "placeholder": true,
+    "image_layout": "portrait"
   },
   {
     "id": "player-04",
@@ -49,7 +52,8 @@
     "history": "",
     "message": "",
     "image": "assets/player-avatar-04.svg",
-    "placeholder": true
+    "placeholder": true,
+    "image_layout": "portrait"
   },
   {
     "id": "player-05",
