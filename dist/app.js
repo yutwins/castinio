@@ -5,6 +5,15 @@ menuButton?.addEventListener('click', () => { const open = menuButton.getAttribu
 document.addEventListener('keydown', event => { if(event.key === 'Escape' && menuButton?.getAttribute('aria-expanded') === 'true'){closeMenu();menuButton.focus();} });
 navigation?.addEventListener('click', event => { if (event.target.closest('a')) closeMenu(); });
 window.matchMedia('(min-width: 801px)').addEventListener('change', event => { if(event.matches) closeMenu(); });
+const heroPhotos = document.querySelectorAll('.hero-photo');
+if (heroPhotos.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  let heroIndex = 0;
+  setInterval(() => {
+    heroPhotos[heroIndex].classList.remove('is-active');
+    heroIndex = (heroIndex + 1) % heroPhotos.length;
+    heroPhotos[heroIndex].classList.add('is-active');
+  }, 6000);
+}
 const contactForm = document.querySelector('#contact-form');
 if (contactForm) {
   const type = new URLSearchParams(location.search).get('type');
