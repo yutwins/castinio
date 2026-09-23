@@ -1,5 +1,19 @@
 # FCカスティーニオ HTMLプレビュー
 
+## メンバー紹介の編集（2026-09-23追加）
+
+`data/members.json` に選手25人・監督1人・コーチ3人の仮データを保存。`member_pages.py` が一覧と個別ページを生成する。既存の `build_preview.py` で一括再生成できる。専用CSSは `dist/members.css`。
+
+- `id`：詳細URL用の固定ID。
+- `name`、`english_name`、`position`、`history`、`message`：掲載内容。
+- `number`：実際の背番号を数値で指定。未提供はnull。実番号ありを数値順に並べ、未提供は後ろへ配置する。
+- `preview_number`：未提供時の仮番号。
+- `role`：監督またはコーチ。
+- `image`：distからの画像相対パス。
+- `placeholder`：仮のエンブレムはtrue。個人写真に置換したらfalse。
+
+実データへの置換完了後、生成側の仮表示の注意書きも変更する。生成された個別HTMLは直接編集しない。
+
 WordPress制作の前に画面・導線を確認する静的HTMLの試作。Cloudflare Pagesで公開中。お問い合わせフォームはCloudflare Pages Functions経由で実際に送信される。管理画面・記事投稿は未実装。
 
 ## フォルダ構成

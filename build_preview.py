@@ -1,12 +1,14 @@
 """Assemble local HTML previews using only Python's standard library."""
 from pathlib import Path
 from html import escape
+from member_pages import make_member_pages
 
 ROOT = Path(__file__).resolve().parent
 DEST = ROOT / 'dist'
 PAGES = {
     'index': ('ホーム', 'FCカスティーニオ｜神戸の社会人サッカーチーム'),
     'team': ('チーム紹介', 'チーム紹介｜FCカスティーニオ'),
+    'members': ('メンバー紹介', 'メンバー紹介｜FCカスティーニオ'),
     'activities': ('活動紹介', '活動紹介｜FCカスティーニオ'),
     'join': ('選手募集', '選手募集｜FCカスティーニオ'),
     'match': ('対戦相手募集', '対戦相手募集｜FCカスティーニオ'),
@@ -18,15 +20,18 @@ BRAND = '''<img src="assets/emblem-instagram.jpg" width="54" height="54" alt="">
         <small>FCカスティーニオ</small>
       </span>'''
 
-for slug, (label, title) in PAGES.items():
+render_pages = {}
+for slug, (_, title) in PAGES.items():
     source = ROOT / 'pages' / f'{slug}.html'
-    if not source.exists():
-        continue
+    if source.exists():
+        render_pages[slug] = (title, source.read_text())
+render_pages.update(make_member_pages())
+for slug, (title, body) in render_pages.items():
     links = []
     for key, (text, _) in PAGES.items():
         if key == 'index':
             continue
-        current = ' aria-current="page"' if key == slug else ''
+        current = ' aria-current="page"' if key == slug or (key == 'members' and slug.startswith('member-')) else ''
         cls = ' class="nav-contact"' if key == 'contact' else ''
         links.append(f'        <a href="{key}.html"{current}{cls}>{text}</a>')
     nav_links = '\n'.join(links)
@@ -40,6 +45,7 @@ for slug, (label, title) in PAGES.items():
   <meta name="description" content="神戸市リーグに所属する社会人サッカーチーム、FCカスティーニオ。楽しく真剣に、仲間とのコミュニケーションを大切に活動しています。">
   <link rel="icon" type="image/jpeg" href="assets/emblem-instagram.jpg">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="members.css">
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -62,7 +68,7 @@ for slug, (label, title) in PAGES.items():
     </div>
   </header>
 
-  <main id="main">{source.read_text()}</main>
+  <main id="main">{body}</main>
 
   <footer class="footer">
     <div class="wrap">
@@ -70,6 +76,7 @@ for slug, (label, title) in PAGES.items():
         <a class="brand" href="index.html" aria-label="FCカスティーニオ ホーム">{BRAND}</a>
         <div class="footer-links">
           <a href="team.html">チーム紹介</a>
+          <a href="members.html">メンバー紹介</a>
           <a href="contact.html">お問い合わせ</a>
           <a href="https://www.instagram.com/fc.castinio/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
         </div>
