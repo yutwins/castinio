@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" width="150" height="150" role="img" aria-label="仮アバター 背番号4">
+  <rect width="150" height="150" fill="#123eae"/>
+  <circle cx="75" cy="60" r="34" fill="#d93442"/>
+  <path d="M75 34a26 26 0 0 1 26 26 26 26 0 0 1-8 19H57a26 26 0 0 1-8-19 26 26 0 0 1 26-26Z" fill="#fff"/>
+  <path d="M45 130c3-22 14-33 30-33s27 11 30 33" fill="#d93442"/>
+  <rect x="0" y="138" width="150" height="12" fill="#08276e"/>
+  <text x="75" y="76" text-anchor="middle" font-family="-apple-system,'Hiragino Kaku Gothic ProN',sans-serif" font-size="34" font-weight="900" fill="#123eae">4</text>
+</svg>

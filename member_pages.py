@@ -24,7 +24,7 @@ def make_member_pages():
     def photo(r):
         return f'''<div class="member-visual {'is-placeholder' if r['placeholder'] else ''}">
           <span class="member-watermark" aria-hidden="true">{e(label(r))}</span>
-          <img class="member-image" src="{e(r['image'])}" alt="{'個人写真準備中・チームエンブレム' if r['placeholder'] else e(r['name'])}" width="150" height="150" loading="lazy">
+          <img class="member-image" src="{e(r['image'])}" alt="{'個人写真準備中の仮アバター' if r['placeholder'] else e(r['name'])}" width="150" height="150" loading="lazy">
           {'<span class="photo-pending">PHOTO COMING SOON</span>' if r['placeholder'] else ''}</div>'''
 
     def card(r):
